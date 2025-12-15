@@ -29,9 +29,9 @@ If you have any questions or concerns, feel free to contact us. We are always ha
     - [Schemas](#schemas)
       - [Employee](#employee)
         - [Convention](#convention)
-        - [Contract](#contract)
+      - [Contract](#contract)
         - [ContractAllocation](#contractallocation)
-      - [ContractType](#contracttype)
+        - [ContractType](#contracttype)
       - [Department](#department)
       - [CostCenter](#costcenter)
       - [JobTitle](#jobtitle)
@@ -135,7 +135,7 @@ Specifies the naming rule used to construct the employee’s display name. The v
 | **PB** | PartnerNameBeforeBirthName | Display name shows the partner’s name first, followed by the birth name. |
 | **BP** | BirthNameBeforePartnerName | Display name shows the birth name first, followed by the partner’s name. |
 
-##### Contract
+#### Contract
 
 The Contract model represents an employee’s employment contract within the system.
 It describes when the contract is active, how many hours are worked, who the manager is, and how the contract relates to organizational structures (department, cost center, job title, employer, etc.).
@@ -169,7 +169,7 @@ The ContractAllocation sub-model specifies the workload allocation: hours per we
 | **Percentage**   | `float` | FTE percentage (0.0 – 1.0). Example: `0.8` for 80% FTE.                         |
 | **Sequence**     | `int`   | Sequence number for ordering multiple allocations, if applicable.               |
 
-#### ContractType
+##### ContractType
 
 The ContractType sub-model specifies whether the employee is internal or external.
 
