@@ -3,7 +3,7 @@
 This example API specifies the minimal requirements for developing a new API that will be used as an HR source system for HelloID provisioning.
 
 > [!NOTE]
-> The swagger interface can be found on:
+> The swagger interface can be found on: https://app.swaggerhub.com/apis-docs/ConnectorTeam/Basic-Example-Source-API/1.0
 
 ## About
 
