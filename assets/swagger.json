@@ -1,0 +1,394 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Example Source API",
+    "description": "This example API specifies the minimal requirements for developing a new API that will be used as an HR source system for HelloID provisioning.",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/employees": {
+      "get": {
+        "tags": [
+          "Employees"
+        ],
+        "summary": "Get all employees",
+        "description": "<h2>Implementation notes</h2>\r\n            An employee represents a person within the organization and contains both identity information(name, display rules, partner naming), \r\n            business contact information, system identifiers, and a collection of related contracts.",
+        "responses": {
+          "200": {
+            "description": "Returns the list of all employees",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/employees/{id}/businessemail": {
+      "patch": {
+        "tags": [
+          "Employees"
+        ],
+        "summary": "Update the `businessEmail` of an employee",
+        "description": "<h2>Implementation notes</h2>\r\n            In addition to retrieving all employees, we also need an API call to update the `businessEmail` address of an employee. \r\n            Email addresses are generally provisioned by identity platforms such as Active Directory or Entra ID.Therefore, \r\n            the HR system must be able to receive and store externally generated email addresses through a dedicated update operation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmployeeEmailRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmployeeEmailRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmployeeEmailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated employee"
+          }
+        }
+      }
+    },
+    "/api/departments": {
+      "get": {
+        "tags": [
+          "Departments"
+        ],
+        "summary": "Get all departments",
+        "description": "<h2>Implementation notes</h2>\r\n            A department represents an organizational unit. \r\n            Each department has an internal ID, name, code, external identifier, and a reference to the manager assigned to oversee it.\r\n            Departmental information is essential because many business rules -and ultimately- the entitlements a person receives, \r\n            are determined by attributes related to the individual, their contract, or the department they belong to.",
+        "responses": {
+          "200": {
+            "description": "Returns the list of all departments",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Department"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Department"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Department"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Contract": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Internal/database ID. Assigned by the application.",
+            "format": "int32"
+          },
+          "externalId": {
+            "type": "string",
+            "description": "External identifier used by external systems.",
+            "nullable": true
+          },
+          "employeeObjectId": {
+            "type": "integer",
+            "description": "Id of the employee this contract belongs to. Links to the `Employee.Id`.",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Date when the contract becomes active.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Date when the contract ends. Also supports open-ended contracts.",
+            "format": "date-time"
+          },
+          "allocation": {
+            "$ref": "#/components/schemas/ContractAllocation"
+          },
+          "jobTitle": {
+            "$ref": "#/components/schemas/JobTitle"
+          },
+          "managerExternalId": {
+            "type": "string",
+            "description": "External Id of the manager responsible for this contract.",
+            "nullable": true
+          },
+          "department": {
+            "$ref": "#/components/schemas/Department"
+          },
+          "costCenter": {
+            "$ref": "#/components/schemas/CostCenter"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Contract model represents an employee’s employment contract within the system. \r\nIt describes when the contract is active, how many hours are worked, who the manager is, and how the contract relates to organizational structures(department, cost center, job title, employer, etc.).\r\nIt also supports open-ended contracts."
+      },
+      "ContractAllocation": {
+        "type": "object",
+        "properties": {
+          "hoursPerWeek": {
+            "type": "integer",
+            "description": "Number of hours per week the employee works under this contract (e.g., 36, 40).",
+            "format": "int32"
+          },
+          "percentage": {
+            "type": "number",
+            "description": "FTE percentage (0.0 – 1.0). Example: `0.8` for 80% FTE.",
+            "format": "float"
+          },
+          "sequence": {
+            "type": "integer",
+            "description": "Sequence number for ordering multiple allocations, if applicable.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The ContractAllocation sub-model specifies the workload allocation: hours per week, percentage of FTE, and a sequence number (for systems supporting multiple allocations per contract)."
+      },
+      "CostCenter": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Internal/database ID. Assigned by the application.",
+            "format": "int32",
+            "readOnly": true
+          },
+          "externalId": {
+            "type": "string",
+            "description": "External identifier used by external systems.",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Descriptive name of the cost center (e.g., “Financiën”)",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "description": "Short functional code representing the cost center (e.g., “FIN”)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The CostCenter object represents a financial or budgeting unit inside the organization. \r\nContracts reference a CostCenter to indicate where labor costs should be allocated."
+      },
+      "Department": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Internal/database ID. Assigned by the application.",
+            "format": "int32",
+            "readOnly": true
+          },
+          "externalId": {
+            "type": "string",
+            "description": "External identifier used by external systems.",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The full name of the department (e.g., \"Human Resources\").",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "description": "Short code representing the department (e.g., \"HR\", \"ICT\").",
+            "nullable": true
+          },
+          "managerExternalId": {
+            "type": "string",
+            "description": "ExternalId of the employee assigned as department manager.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Department model represents an organizational unit.\r\nEach department has an internal ID, name, code, external identifier, and a reference to the manager assigned to oversee it."
+      },
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Internal/database ID. Assigned by the application.",
+            "format": "int32"
+          },
+          "externalId": {
+            "type": "string",
+            "description": "External identifier used by external systems.",
+            "nullable": true
+          },
+          "employeeId": {
+            "type": "string",
+            "description": "Personnel number used within the HR system.",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "description": "The username for the employee, typically used for login or email prefixes.",
+            "nullable": true
+          },
+          "givenName": {
+            "type": "string",
+            "description": "Employee’s first name.",
+            "nullable": true
+          },
+          "familyName": {
+            "type": "string",
+            "description": "Employee’s last name (birth name).",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Fully calculated display name, based on naming conventions and partner naming rules.",
+            "nullable": true
+          },
+          "initials": {
+            "type": "string",
+            "description": "Initials constructed from given and family name.",
+            "nullable": true
+          },
+          "familyNamePrefix": {
+            "type": "string",
+            "description": "Dutch-style name prefix (e.g. *van*, *de*, *van der*)",
+            "nullable": true
+          },
+          "familyNamePartner": {
+            "type": "string",
+            "description": "Last name of the employee’s partner (if applicable).",
+            "nullable": true
+          },
+          "familyNamePartnerPrefix": {
+            "type": "string",
+            "description": "Name prefix belonging to the partner’s family name",
+            "nullable": true
+          },
+          "convention": {
+            "type": "string",
+            "description": "Specifies the naming rule used to construct the employee’s display name. The value defines which name parts are used (birth name, partner name) and in which order.",
+            "nullable": true
+          },
+          "businessEmail": {
+            "type": "string",
+            "description": "Employee’s business / corporate email address.\r\n\r\n\r\nCan also be updated using: PATCH: api/employees/{id}/businessemail\r\n</br>",
+            "nullable": true
+          },
+          "businessPhoneFixed": {
+            "type": "string",
+            "description": "Employee’s fixed business phone number.",
+            "nullable": true
+          },
+          "businessPhoneMobile": {
+            "type": "string",
+            "description": "Employee’s mobile business phone number.",
+            "nullable": true
+          },
+          "contracts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Contract"
+            },
+            "description": "List of employment contracts associated with the employee.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The Employee model represents a person within the organization and contains both identity information (name, display rules, partner naming),\r\nbusiness contact information, system identifiers, and a collection of related contracts."
+      },
+      "JobTitle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "externalId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateEmployeeEmailRequest": {
+        "type": "object",
+        "properties": {
+          "businessEmail": {
+            "type": "string",
+            "description": "The new business email address for the employee.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request payload for updating an employee's business email address."
+      }
+    }
+  }
+}

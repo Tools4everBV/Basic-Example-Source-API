@@ -1,0 +1,6 @@
+@EXAMPLE.SOURCE.API_HostAddress = http://localhost:5130
+
+GET {{EXAMPLE.SOURCE.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

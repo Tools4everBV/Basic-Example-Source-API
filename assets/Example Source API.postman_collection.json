@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "75e5f62d-f1d2-4966-86e1-6807479a2c73",
+		"name": "Example Source API",
+		"description": "This example API specifies the minimal requirements for developing a new API that will be used as an HR source system for HelloID provisioning.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5314392"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "employees",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "businessemail",
+									"item": [
+										{
+											"name": "Update the `businessEmail` of an employee",
+											"request": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"businessEmail\": \"string\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/employees/:id/businessemail",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														":id",
+														"businessemail"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "4532"
+														}
+													]
+												},
+												"description": "<h2>Implementation notes</h2>\r\n            In addition to retrieving all employees, we also need an API call to update the `businessEmail` address of an employee. \r\n            Email addresses are generally provisioned by identity platforms such as Active Directory or Entra ID.Therefore, \r\n            the HR system must be able to receive and store externally generated email addresses through a dedicated update operation."
+											},
+											"response": [
+												{
+													"name": "Returns the updated employee",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"businessEmail\": \"string\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/employees/:id/businessemail",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"employees",
+																":id",
+																"businessemail"
+															],
+															"variable": [
+																{
+																	"key": "id",
+																	"value": "4532"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Get all employees",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/employees",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"employees"
+									]
+								},
+								"description": "<h2>Implementation notes</h2>\r\n            An employee represents a person within the organization and contains both identity information(name, display rules, partner naming), \r\n            business contact information, system identifiers, and a collection of related contracts."
+							},
+							"response": [
+								{
+									"name": "Returns the list of all employees",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/employees",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"employees"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 8903,\n    \"externalId\": \"string\",\n    \"employeeId\": \"string\",\n    \"userName\": \"string\",\n    \"givenName\": \"string\",\n    \"familyName\": \"string\",\n    \"displayName\": \"string\",\n    \"initials\": \"string\",\n    \"familyNamePrefix\": \"string\",\n    \"familyNamePartner\": \"string\",\n    \"familyNamePartnerPrefix\": \"string\",\n    \"convention\": \"string\",\n    \"businessEmail\": \"string\",\n    \"businessPhoneFixed\": \"string\",\n    \"businessPhoneMobile\": \"string\",\n    \"contracts\": [\n      {\n        \"id\": 4281,\n        \"externalId\": \"string\",\n        \"employeeObjectId\": 9868,\n        \"startDate\": \"1983-04-02T21:47:02.019Z\",\n        \"endDate\": \"1990-02-11T07:37:50.941Z\",\n        \"allocation\": {\n          \"hoursPerWeek\": 5411,\n          \"percentage\": 220.5786299664214,\n          \"sequence\": 6696\n        },\n        \"jobTitle\": {\n          \"id\": 3802,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\"\n        },\n        \"managerExternalId\": \"string\",\n        \"department\": {\n          \"id\": 8635,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\",\n          \"managerExternalId\": \"string\"\n        },\n        \"costCenter\": {\n          \"id\": 7118,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\"\n        }\n      },\n      {\n        \"id\": 7882,\n        \"externalId\": \"string\",\n        \"employeeObjectId\": 8663,\n        \"startDate\": \"2022-09-24T21:08:01.520Z\",\n        \"endDate\": \"2010-07-08T04:55:56.802Z\",\n        \"allocation\": {\n          \"hoursPerWeek\": 6416,\n          \"percentage\": 6919.489762600028,\n          \"sequence\": 7109\n        },\n        \"jobTitle\": {\n          \"id\": 10,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\"\n        },\n        \"managerExternalId\": \"string\",\n        \"department\": {\n          \"id\": 8139,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\",\n          \"managerExternalId\": \"string\"\n        },\n        \"costCenter\": {\n          \"id\": 845,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\"\n        }\n      }\n    ]\n  },\n  {\n    \"id\": 9672,\n    \"externalId\": \"string\",\n    \"employeeId\": \"string\",\n    \"userName\": \"string\",\n    \"givenName\": \"string\",\n    \"familyName\": \"string\",\n    \"displayName\": \"string\",\n    \"initials\": \"string\",\n    \"familyNamePrefix\": \"string\",\n    \"familyNamePartner\": \"string\",\n    \"familyNamePartnerPrefix\": \"string\",\n    \"convention\": \"string\",\n    \"businessEmail\": \"string\",\n    \"businessPhoneFixed\": \"string\",\n    \"businessPhoneMobile\": \"string\",\n    \"contracts\": [\n      {\n        \"id\": 752,\n        \"externalId\": \"string\",\n        \"employeeObjectId\": 652,\n        \"startDate\": \"1966-06-01T08:42:26.190Z\",\n        \"endDate\": \"2008-03-17T05:43:50.443Z\",\n        \"allocation\": {\n          \"hoursPerWeek\": 2691,\n          \"percentage\": 7681.761602728605,\n          \"sequence\": 4454\n        },\n        \"jobTitle\": {\n          \"id\": 8566,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\"\n        },\n        \"managerExternalId\": \"string\",\n        \"department\": {\n          \"id\": 9532,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\",\n          \"managerExternalId\": \"string\"\n        },\n        \"costCenter\": {\n          \"id\": 3878,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\"\n        }\n      },\n      {\n        \"id\": 2146,\n        \"externalId\": \"string\",\n        \"employeeObjectId\": 9824,\n        \"startDate\": \"1949-09-12T23:56:12.686Z\",\n        \"endDate\": \"2018-06-14T16:40:29.414Z\",\n        \"allocation\": {\n          \"hoursPerWeek\": 1728,\n          \"percentage\": 7408.811840721534,\n          \"sequence\": 8359\n        },\n        \"jobTitle\": {\n          \"id\": 3837,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\"\n        },\n        \"managerExternalId\": \"string\",\n        \"department\": {\n          \"id\": 2700,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\",\n          \"managerExternalId\": \"string\"\n        },\n        \"costCenter\": {\n          \"id\": 1619,\n          \"externalId\": \"string\",\n          \"name\": \"string\",\n          \"code\": \"string\"\n        }\n      }\n    ]\n  }\n]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "departments",
+					"item": [
+						{
+							"name": "Get all departments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/departments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"departments"
+									]
+								},
+								"description": "<h2>Implementation notes</h2>\r\n            A department represents an organizational unit. \r\n            Each department has an internal ID, name, code, external identifier, and a reference to the manager assigned to oversee it.\r\n            Departmental information is essential because many business rules -and ultimately- the entitlements a person receives, \r\n            are determined by attributes related to the individual, their contract, or the department they belong to."
+							},
+							"response": [
+								{
+									"name": "Returns the list of all departments",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/departments",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"departments"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 7973,\n    \"externalId\": \"string\",\n    \"name\": \"string\",\n    \"code\": \"string\",\n    \"managerExternalId\": \"string\"\n  },\n  {\n    \"id\": 6613,\n    \"externalId\": \"string\",\n    \"name\": \"string\",\n    \"code\": \"string\",\n    \"managerExternalId\": \"string\"\n  }\n]"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/"
+		}
+	]
+}
