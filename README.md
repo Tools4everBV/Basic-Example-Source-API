@@ -29,8 +29,8 @@ If you have any questions or concerns, feel free to contact us. We are always ha
     - [Schemas](#schemas)
       - [Employee](#employee)
         - [Convention](#convention)
-      - [Contract](#contract)
-      - [ContractAllocation](#contractallocation)
+        - [Contract](#contract)
+        - [ContractAllocation](#contractallocation)
       - [ContractType](#contracttype)
       - [Department](#department)
       - [CostCenter](#costcenter)
@@ -135,7 +135,7 @@ Specifies the naming rule used to construct the employee’s display name. The v
 | **PB** | PartnerNameBeforeBirthName | Display name shows the partner’s name first, followed by the birth name. |
 | **BP** | BirthNameBeforePartnerName | Display name shows the birth name first, followed by the partner’s name. |
 
-#### Contract
+##### Contract
 
 The Contract model represents an employee’s employment contract within the system.
 It describes when the contract is active, how many hours are worked, who the manager is, and how the contract relates to organizational structures (department, cost center, job title, employer, etc.).
@@ -159,7 +159,7 @@ The ContractAllocation sub-model specifies the workload allocation: hours per we
 | **Department**        | `Department`         | Department object representing the organizational unit.                                       |
 | **CostCenter**        | `CostCenter`         | Cost center object associated with the contract.                                              |
 
-#### ContractAllocation
+##### ContractAllocation
 
 The ContractAllocation sub-model specifies the workload allocation: hours per week, percentage of FTE, and a sequence number (for systems supporting multiple allocations per contract).
 
