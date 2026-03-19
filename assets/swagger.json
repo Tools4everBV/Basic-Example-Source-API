@@ -6,6 +6,96 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/oauth/token": {
+      "post": {
+        "tags": [
+          "OAuth"
+        ],
+        "summary": "Retrieve an access token using a clientId and clientSecret",
+        "description": "<h2>Implementation notes</h2>\r\n            We prefer OAuth for authentication because it’s secure, easy to use, and works smoothly with modern apps and APIs.\r\n            \r\n\r\n            Example request:\r\n            \r\n                POST /oauth/token\r\n                {\r\n                    \"client_id\": \"example-client-id\",\r\n                    \"client_secret\": \"example-client-secret\"\r\n                }",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A valid access token was issued.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request was malformed or missing required fields.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed or was not provided.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/employees": {
       "get": {
         "tags": [
@@ -164,6 +254,9 @@
           "allocation": {
             "$ref": "#/components/schemas/ContractAllocation"
           },
+          "contractType": {
+            "$ref": "#/components/schemas/ContractType"
+          },
           "jobTitle": {
             "$ref": "#/components/schemas/JobTitle"
           },
@@ -204,6 +297,22 @@
         "additionalProperties": false,
         "description": "The ContractAllocation sub-model specifies the workload allocation: hours per week, percentage of FTE, and a sequence number (for systems supporting multiple allocations per contract)."
       },
+      "ContractType": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Short code representing the contract type (e.g., \"INT\" for internal, \"EXT\" for external).",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Descriptive name of the contract type indicating whether the employee is internal or external.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CostCenter": {
         "type": "object",
         "properties": {
@@ -220,12 +329,12 @@
           },
           "name": {
             "type": "string",
-            "description": "Descriptive name of the cost center (e.g., “Financiën”)",
+            "description": "The full name of the cost center (e.g., “Financiën”).",
             "nullable": true
           },
           "code": {
             "type": "string",
-            "description": "Short functional code representing the cost center (e.g., “FIN”)",
+            "description": "Short code representing the cost center (e.g., “FIN”).",
             "nullable": true
           }
         },
@@ -286,6 +395,11 @@
           "userName": {
             "type": "string",
             "description": "The username for the employee, typically used for login or email prefixes.",
+            "nullable": true
+          },
+          "nickName": {
+            "type": "string",
+            "description": "Employee’s given name used for display purposes.\r\nThis may differ from the legal given name and is typically the preferred or commonly used name.",
             "nullable": true
           },
           "givenName": {
@@ -360,19 +474,73 @@
         "properties": {
           "id": {
             "type": "integer",
+            "description": "Internal/database ID. Assigned by the application.",
             "format": "int32"
           },
           "externalId": {
             "type": "string",
+            "description": "External identifier used by external systems.",
             "nullable": true
           },
           "name": {
             "type": "string",
+            "description": "The full name of the job title.",
             "nullable": true
           },
           "code": {
             "type": "string",
+            "description": "Short code representing the job title.",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OAuthErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TokenRequest": {
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "description": "The ClientId to authenticate to the example API.",
+            "nullable": true,
+            "example": "example-client-id"
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "The ClientSecret to authenticate to the example API.",
+            "nullable": true,
+            "example": "example-client-secret"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "nullable": true
+          },
+          "token_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "expires_in": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
