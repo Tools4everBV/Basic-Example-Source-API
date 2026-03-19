@@ -36,6 +36,7 @@ If you have any questions or concerns, feel free to contact us. We are always ha
       - [CostCenter](#costcenter)
       - [JobTitle](#jobtitle)
     - [Available API calls](#available-api-calls)
+      - [Authentication](#authentication)
       - [Employee related actions](#employee-related-actions)
       - [Department related actions](#department-related-actions)
     - [Undocumenated API calls](#undocumenated-api-calls)
@@ -210,6 +211,12 @@ The JobTitle entity represents a job title within the target system. It contains
 | **Code**       | `string` | Short code representing the job title.             |
 
 ### Available API calls
+
+#### Authentication
+
+| HTTP Method | Endpoint | Description |
+| --- | --- |--- |
+| POST | [/api/oauth/token](#post-apiauthtoken) | Retrieve an oAuth token |
 
 #### Employee related actions
 
